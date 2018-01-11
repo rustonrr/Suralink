@@ -13,10 +13,26 @@ class SuralinkApplicationFX {
     constructor() {
         this._frame = 0;
         this._canvasInitted = false;
+
+        // The memory leak appears to be in the below array.
+        // Data is continually added causing the array to be several thousand entries long within minutes
+        // Fixed by creating function cleanMemoryLeak, splices items from array that have traveled 50px past window height
+
         this._shapes = [];
 
         this.InitCanvas();
         this.Render();
+    }
+
+    cleanMemoryLeak(){
+        console.log(this._shapes.length, this._shapes)
+        let shapesArray = this._shapes;
+
+        for(let i = 0; i < this._shapes.length; i++){
+            if(shapesArray[i]._y > window.innerHeight + 50){
+                this._shapes.splice(i, 1)
+            }
+        }
     }
 
     InitCanvas() {
@@ -33,11 +49,14 @@ class SuralinkApplicationFX {
 
 
     DropShapes() {
-        // console.log(this._shapes)
         if (this._shapes.length <= 0) 
-            window.requestAnimationFrame(() => this.Render());
-
+        window.requestAnimationFrame(() => this.Render());
+        
         var howManyToDrop = getRandomInt(1, 12);
+        
+        // Cleaning function
+        this.cleanMemoryLeak();
+
 
         for (var xIt = 1; xIt <= howManyToDrop; xIt++) {
             let shape = this.randomizeShape();
@@ -56,6 +75,9 @@ class SuralinkApplicationFX {
         let alpha = randomNumFrom(0.15, 0.65); //alpha
         let gravity = randomNumFrom(0.05, 1.45); //gravity
         let size = randomNumFrom(2, 20);
+
+        // Below would be based on only two possible shapes, 
+        // For more than 2 shapes, would create a shape array with all possibilities 
 
         let shapeRandomizer = getRandomInt(1, 10)
         if(shapeRandomizer % 2 === 0){
