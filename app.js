@@ -25,7 +25,7 @@ class SuralinkApplicationFX {
     }
 
     cleanMemoryLeak(){
-        console.log(this._shapes.length, this._shapes)
+        // console.log(this._shapes.length, this._shapes)
         let shapesArray = this._shapes;
 
         for(let i = 0; i < this._shapes.length; i++){
