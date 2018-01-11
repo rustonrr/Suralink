@@ -33,6 +33,7 @@ class SuralinkApplicationFX {
 
 
     DropShapes() {
+        // console.log(this._shapes)
         if (this._shapes.length <= 0) 
             window.requestAnimationFrame(() => this.Render());
 
@@ -41,6 +42,7 @@ class SuralinkApplicationFX {
         for (var xIt = 1; xIt <= howManyToDrop; xIt++) {
             let shape = this.randomizeShape();
             this._shapes.push(shape);
+
         }
         setTimeout(() => this.DropShapes(), getRandomInt(350, 950));
     }
